@@ -20,6 +20,7 @@ const TShirtSelector = () => {
     { id: 1, src: Shirt1, alt: "Shirt 1", label: "Blue", dimensions: "Length: 28in, Width: 20in" },
     { id: 2, src: Shirt2, alt: "Shirt 2", label: "Brown", dimensions: "Length: 30in, Width: 22in" },
     { id: 3, src: Shirt3, alt: "Shirt 3", label: "Red", dimensions: "Length: 32in, Width: 24in" },
+    { id: 3, src: Shirt3, alt: "Shirt 3", label: "Red", dimensions: "Length: 32in, Width: 24in" },
   ];
 
   const selectedShirtDetails = shirts.find((shirt) => shirt.src === selectedShirt);
