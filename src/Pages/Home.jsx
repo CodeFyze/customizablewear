@@ -9,7 +9,7 @@ const Home = () => {
       <div className="hero py-20">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6 md:px-10">
           <div className="w-full md:w-1/2 text-center md:text-left mb-10 md:mb-0">
-            <h6 className="text-2xl text-gray-700">Well Come To .........</h6>
+            <h6 className="text-2xl text-gray-700">Welcome To .........</h6>
             <h3 className="text-3xl md:text-6xl font-bold text-gray-900 mt-4">
               Professor Store
             </h3>
@@ -32,7 +32,7 @@ const Home = () => {
       </div>
 
       <div className="container mx-auto px-6 md:px-10 pt-8">
-        <Products />
+        <Products showTShirtSelector={false} />
       </div>
     </div>
   );
