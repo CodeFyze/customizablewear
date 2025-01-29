@@ -60,6 +60,7 @@ const TShirtSelector = () => {
                 alt={shirt.alt}
                 className="w-full h-24 object-cover rounded-md"
               />
+              
               <div className="mt-2 text-sm text-gray-700">{shirt.label}</div>
             </div>
           ))}
@@ -70,6 +71,16 @@ const TShirtSelector = () => {
           <h3 className="text-lg font-bold mb-2">Shirt Dimensions</h3>
           <div className="mt-4 flex space-x-4">
             <img
+              src={selectedShirtDetails?.src}
+              alt={selectedShirtDetails?.alt}
+              className="w-16 h-16 object-cover rounded-md border border-gray-300"
+            />
+             <img
+              src={selectedShirtDetails?.src}
+              alt={selectedShirtDetails?.alt}
+              className="w-16 h-16 object-cover rounded-md border border-gray-300"
+            />
+             <img
               src={selectedShirtDetails?.src}
               alt={selectedShirtDetails?.alt}
               className="w-16 h-16 object-cover rounded-md border border-gray-300"

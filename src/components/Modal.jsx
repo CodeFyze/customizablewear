@@ -4,48 +4,53 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [productTitle, setProductTitle] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productStock, setProductStock] = useState("In Stock");
-  const [productImages, setProductImages] = useState([]);
+  const [frontImage, setFrontImage] = useState(null);
+  const [backImage, setBackImage] = useState(null);
+  const [sideImage, setSideImage] = useState(null);
 
   useEffect(() => {
     if (initialData) {
       setProductTitle(initialData.title);
       setProductPrice(initialData.price);
       setProductStock(initialData.stock);
-      setProductImages(initialData.images || []);
+      setFrontImage(initialData.images?.front || null);
+      setBackImage(initialData.images?.back || null);
+      setSideImage(initialData.images?.side || null);
     } else {
       setProductTitle("");
       setProductPrice("");
       setProductStock("In Stock");
-      setProductImages([]);
+      setFrontImage(null);
+      setBackImage(null);
+      setSideImage(null);
     }
   }, [initialData]);
 
   if (!isOpen) return null;
 
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (productImages.length + files.length > 5) {
-      alert("You can only upload up to 5 images.");
-      return;
-    }
-    setProductImages(files);
-  };
-
-  const removeImage = (index) => {
-    setProductImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  const handleImageChange = (e, position) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (position === "front") setFrontImage(file);
+    if (position === "back") setBackImage(file);
+    if (position === "side") setSideImage(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (productImages.length === 0) {
-      alert("Please upload at least one product image!");
+    if (!frontImage || !backImage || !sideImage) {
+      alert("Please upload all three product images!");
       return;
     }
+    
     onSubmit({
       title: productTitle,
       price: productPrice,
       stock: productStock,
-      images: productImages,
+      front: frontImage,
+      back: backImage,
+      side: sideImage
     });
   };
 
@@ -88,28 +93,16 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Product Images (Max 5)</label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mb-2"
-            />
-            <div className="grid grid-cols-3 gap-2">
-              {productImages.map((image, index) => (
-                <div key={index} className="relative w-20 h-20">
-                  <img src={image} alt={`Product ${index}`} className="w-full h-full object-cover rounded" />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                  >
-                    x
-                  </button>
-                </div>
-              ))}
-            </div>
+            <label className="block text-gray-700 font-medium mb-2">Front Image</label>
+            <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, "front")} />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Back Image</label>
+            <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, "back")} />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-medium mb-2">Side Image</label>
+            <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, "side")} />
           </div>
           <div className="flex justify-end">
             <button

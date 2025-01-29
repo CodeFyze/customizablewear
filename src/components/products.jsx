@@ -7,12 +7,11 @@ import ConfirmationModal from "./ConfirmationModal";
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [products, setProducts] = useState([]); // Initialize as an empty array
+  const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const API_URL = "http://localhost:5000/api/products";
 
-  // Fetch all products
   const fetchProducts = async () => {
     try {
       const response = await fetch(`${API_URL}`, {
@@ -22,9 +21,9 @@ const Products = () => {
       if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
 
-      // Extract products array from the API response
       if (data.success && Array.isArray(data.products)) {
         setProducts(data.products);
+        console.log(data.products);
       } else {
         console.error("Unexpected API response:", data);
         toast.error("Unexpected response format from API", { position: "top-right" });
@@ -35,22 +34,23 @@ const Products = () => {
     }
   };
 
-  // Handle product submission (add or update)
   const handleProductSubmit = async (productData) => {
     try {
-      const token = localStorage.getItem("authToken"); // Ensure that token exists
+      const token = localStorage.getItem("authToken");
       if (!token) {
         toast.error("You are not logged in. Please log in to add products.", { position: "top-right" });
         return;
       }
-  
+      console
       const formData = new FormData();
       formData.append("title", productData.title);
       formData.append("description", productData.description);
       formData.append("price", productData.price);
       
-      const images = productData.images || [];
-      images.forEach((image) => formData.append("photos", image));
+      if (productData.front) formData.append("front", productData.front);
+      if (productData.back) formData.append("back", productData.back);
+      if (productData.side) formData.append("side", productData.side);
+      console.log("Form data in products", formData);
       
       let response;
       if (selectedProduct) {
@@ -66,10 +66,10 @@ const Products = () => {
           body: formData,
         });
       }
-      console.log(formData);
-      console.log(response);
+
       if (!response.ok) throw new Error("Failed to save product");
-  
+      const savedProduct = await response.json();
+
       if (selectedProduct) {
         setProducts((prevProducts) =>
           prevProducts.map((product) =>
@@ -88,19 +88,15 @@ const Products = () => {
       setIsModalOpen(false);
     }
   };
-  
 
-  // Handle product deletion
   const handleDeleteProduct = async (productId) => {
     try {
       const response = await fetch(`${API_URL}/delete/${productId}`, {
+        credentials: 'include',
         method: "DELETE",
       });
-
       if (!response.ok) throw new Error("Failed to delete product");
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== productId)
-      );
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
       toast.success("Product deleted successfully!", { position: "top-right" });
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -116,7 +112,6 @@ const Products = () => {
 
   return (
     <div className="p-4">
-      {/* Header with Add Product Button */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold text-gray-800">Products</h1>
         <button
@@ -130,13 +125,12 @@ const Products = () => {
         </button>
       </div>
 
-      {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {Array.isArray(products) &&
           products.map((product) => (
             <div key={product.id} className="bg-white shadow rounded-lg p-4">
               <img
-                src={product.image}
+                src={product.frontImage || product.backImage || product.sideImage}
                 alt={product.title}
                 className="w-32 h-32 object-cover rounded-lg mb-4"
               />
@@ -166,10 +160,8 @@ const Products = () => {
           ))}
       </div>
 
-      {/* Toast Notifications */}
       <ToastContainer />
 
-      {/* Modal Components */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -179,7 +171,8 @@ const Products = () => {
       <ConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={() => handleDeleteProduct(selectedProduct.id)}
+        // onConfirm={() => handleDeleteProduct(selectedProduct.id)}
+        onConfirm={() => handleDeleteProduct(selectedProduct._id)}
       />
     </div>
   );
