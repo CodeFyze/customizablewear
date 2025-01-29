@@ -28,8 +28,7 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
       alert("You can only upload up to 5 images.");
       return;
     }
-    const imagePreviews = files.map((file) => URL.createObjectURL(file));
-    setProductImages((prevImages) => [...prevImages, ...imagePreviews]);
+    setProductImages(files);
   };
 
   const removeImage = (index) => {
