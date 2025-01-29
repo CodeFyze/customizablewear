@@ -11,7 +11,10 @@ const Category = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("https://fakestoreapi.in/api/products");
+      const response = await fetch("https://fakestoreapi.in/api/products", {
+        credentials: 'include',
+        method: "GET",
+      });
       const data = await response.json();
       setProducts(data.products);
     } catch (error) {

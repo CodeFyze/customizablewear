@@ -1,52 +1,52 @@
 import React, { useState, useEffect } from "react";
 
 const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
-  const [productName, setProductName] = useState("");
+  const [productTitle, setProductTitle] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productStock, setProductStock] = useState("In Stock");
-  const [productImage, setProductImage] = useState(null);
-  const [imageLabel, setImageLabel] = useState("Choose File");
+  const [productImages, setProductImages] = useState([]);
 
   useEffect(() => {
     if (initialData) {
-      setProductName(initialData.name);
+      setProductTitle(initialData.title);
       setProductPrice(initialData.price);
       setProductStock(initialData.stock);
-      setProductImage(initialData.image);
-      setImageLabel("Product Image Added");
+      setProductImages(initialData.images || []);
     } else {
-      setProductName("");
+      setProductTitle("");
       setProductPrice("");
       setProductStock("In Stock");
-      setProductImage(null);
-      setImageLabel("Choose File");
+      setProductImages([]);
     }
   }, [initialData]);
 
   if (!isOpen) return null;
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProductImage(URL.createObjectURL(file)); // Convert the file to a URL
-      setImageLabel("Product Image Added");
-    } else {
-      setProductImage(null);
-      setImageLabel("Choose File");
+    const files = Array.from(e.target.files);
+    if (productImages.length + files.length > 5) {
+      alert("You can only upload up to 5 images.");
+      return;
     }
+    const imagePreviews = files.map((file) => URL.createObjectURL(file));
+    setProductImages((prevImages) => [...prevImages, ...imagePreviews]);
+  };
+
+  const removeImage = (index) => {
+    setProductImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!productImage) {
-      alert("Please upload a product image!");
+    if (productImages.length === 0) {
+      alert("Please upload at least one product image!");
       return;
     }
     onSubmit({
-      name: productName,
+      title: productTitle,
       price: productPrice,
       stock: productStock,
-      image: productImage, // Pass the image URL
+      images: productImages,
     });
   };
 
@@ -58,25 +58,19 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
-              Product Name
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Product Name</label>
             <input
               type="text"
-              id="name"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
+              value={productTitle}
+              onChange={(e) => setProductTitle(e.target.value)}
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="price">
-              Price
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Price</label>
             <input
               type="text"
-              id="price"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               value={productPrice}
               onChange={(e) => setProductPrice(e.target.value)}
@@ -84,11 +78,8 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="stock">
-              Stock Status
-            </label>
+            <label className="block text-gray-700 font-medium mb-2">Stock Status</label>
             <select
-              id="stock"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               value={productStock}
               onChange={(e) => setProductStock(e.target.value)}
@@ -98,23 +89,27 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </select>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="image">
-              Product Image
-            </label>
-            <div className="flex items-center">
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-              <label
-                htmlFor="image"
-                className="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-              >
-                {imageLabel}
-              </label>
+            <label className="block text-gray-700 font-medium mb-2">Product Images (Max 5)</label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mb-2"
+            />
+            <div className="grid grid-cols-3 gap-2">
+              {productImages.map((image, index) => (
+                <div key={index} className="relative w-20 h-20">
+                  <img src={image} alt={`Product ${index}`} className="w-full h-full object-cover rounded" />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center"
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex justify-end">

@@ -15,7 +15,10 @@ const Products = () => {
   // Fetch all products
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_URL}`);
+      const response = await fetch(`${API_URL}`, {
+        credentials: 'include',
+        method: "GET",
+      });
       if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
 
@@ -46,28 +49,25 @@ const Products = () => {
       formData.append("description", productData.description);
       formData.append("price", productData.price);
       
-      const photos = productData.photos || [];
-      photos.forEach((photo) => formData.append("photos", photo));
+      const images = productData.images || [];
+      images.forEach((image) => formData.append("photos", image));
       
       let response;
       if (selectedProduct) {
         response = await fetch(`${API_URL}/update/${selectedProduct.id}`, {
+          credentials: 'include',
           method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
           body: formData,
         });
       } else {
         response = await fetch(`${API_URL}/add`, {
+          credentials: 'include',
           method: "POST",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
           body: formData,
         });
       }
-      
+      console.log(formData);
+      console.log(response);
       if (!response.ok) throw new Error("Failed to save product");
   
       if (selectedProduct) {
