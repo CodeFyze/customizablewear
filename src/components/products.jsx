@@ -41,7 +41,6 @@ const Products = () => {
         toast.error("You are not logged in. Please log in to add products.", { position: "top-right" });
         return;
       }
-      console
       const formData = new FormData();
       formData.append("title", productData.title);
       formData.append("description", productData.description);
@@ -51,10 +50,12 @@ const Products = () => {
       if (productData.back) formData.append("back", productData.back);
       if (productData.side) formData.append("side", productData.side);
       console.log("Form data in products", formData);
+      console.log("Selected product:", productData);
       
+
       let response;
       if (selectedProduct) {
-        response = await fetch(`${API_URL}/update/${selectedProduct.id}`, {
+        response = await fetch(`${API_URL}/update/${selectedProduct._id}`, {
           credentials: 'include',
           method: "PUT",
           body: formData,

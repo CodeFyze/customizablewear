@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 
-const AddTextLogoPopup = ({ onBack }) => {
+const AddTextLogoPopup = ({ onBack, onFinish }) => {
   const [textLine, setTextLine] = useState("");
   const [font, setFont] = useState("Standard");
   const [color, setColor] = useState("Black");
   const [notes, setNotes] = useState("");
+
+  const handleFinish = () => {
+    onFinish({ textLine, font, color, notes });
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -101,10 +105,13 @@ const AddTextLogoPopup = ({ onBack }) => {
             Back
           </button>
           <div className="flex gap-2">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none">
+            <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none" disabled>
               Add Another Logo
             </button>
-            <button className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none">
+            <button
+              onClick={handleFinish}
+              className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none"
+            >
               Finish
             </button>
           </div>

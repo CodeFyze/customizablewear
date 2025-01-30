@@ -7,9 +7,7 @@ import NapeOfNeck from "../assets/shirtlogos/nape-of-neck_dq_large.png";
 import RightBreast from "../assets/shirtlogos/right-chest_no_large.png";
 import RightSleeve from "../assets/shirtlogos/sleeve-right_ju_large.png";
 
-const SizePopup = ({ onClose, onNext, visible }) => {
-  const [selectedPosition, setSelectedPosition] = useState("Large Front");
-
+const SizePopup = ({ onClose, onNext, visible, selectedPosition, setSelectedPosition }) => {
   if (!visible) return null;
 
   const positions = [
@@ -29,11 +27,10 @@ const SizePopup = ({ onClose, onNext, visible }) => {
           Choose Position(s)
         </div>
         <div className="text-sm text-center text-gray-700 mb-6">
-          1 Position(s) Selected (applied to all)
+          {selectedPosition ? `Selected: ${selectedPosition}` : "Select a position"}
         </div>
         <div className="text-sm text-blue-500 text-center mb-6">
-          Note: Additional logos can be added after the first one has been
-          uploaded.
+          Note: Additional logos can be added after the first one has been uploaded.
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {positions.map((position) => (
@@ -67,6 +64,7 @@ const SizePopup = ({ onClose, onNext, visible }) => {
           <button
             onClick={onNext}
             className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg w-32 text-center"
+            disabled={!selectedPosition} // Disable if no position selected
           >
             NEXT STEP
           </button>

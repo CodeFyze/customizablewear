@@ -8,11 +8,21 @@ import UploadLogoPopup from "./UploadLogoPopup";
 
 const Popup = ({ onClose, visible }) => {
   const [selectedMethod, setSelectedMethod] = useState("Embroidery");
+  const [selectedPosition, setSelectedPosition] = useState("Large Front"); // New state for logo position
   const [showSizePopup, setShowSizePopup] = useState(false);
   const [isAddLogoPopupVisible, setIsAddLogoPopupVisible] = useState(false);
   const [isAddTextLogoPopupVisible, setIsAddTextLogoPopupVisible] = useState(false);
   const [isUploadLogoPopupVisible, setIsUploadLogoPopupVisible] = useState(false);
+  const [textLogoDetails, setTextLogoDetails] = useState(null);
 
+  const handleFinishTextLogo = (details) => {
+    setTextLogoDetails(details);
+    setIsAddTextLogoPopupVisible(false);
+    setIsAddLogoPopupVisible(false);
+    onClose();
+    console.log("Text logo details:", details);
+    // Handle the details as needed, e.g., save to state, send to server, etc.
+  };
   if (!visible) return null;
 
   return (
@@ -96,7 +106,10 @@ const Popup = ({ onClose, visible }) => {
                 BACK
               </button>
               <button
-                onClick={() => setShowSizePopup(true)}
+                onClick={() => {
+                  setShowSizePopup(true);
+                  console.log("Selected method:", selectedMethod);
+                }}
                 className="bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600"
               >
                 NEXT STEP
@@ -111,9 +124,12 @@ const Popup = ({ onClose, visible }) => {
         <SizePopup
           visible={showSizePopup}
           onClose={() => setShowSizePopup(false)}
+          selectedPosition={selectedPosition}
+          setSelectedPosition={setSelectedPosition}
           onNext={() => {
-            setShowSizePopup(false); // Hide SizePopup
-            setIsAddLogoPopupVisible(true); // Show AddLogoPopup
+            setShowSizePopup(false);
+            setIsAddLogoPopupVisible(true);
+            console.log("Selected position:", selectedPosition);
           }}
         />
       )}
@@ -121,17 +137,18 @@ const Popup = ({ onClose, visible }) => {
       {/* AddLogoPopup */}
       {isAddLogoPopupVisible && (
         <AddLogoPopup
+          selectedPosition={selectedPosition} // Pass down the selected position
           onBack={() => {
             setIsAddLogoPopupVisible(false);
-            setShowSizePopup(true); // Optionally go back to SizePopup
+            setShowSizePopup(true);
           }}
           onNext={() => {
-            setIsAddLogoPopupVisible(false); // Hide AddLogoPopup
-            setIsAddTextLogoPopupVisible(true); // Show AddTextLogoPopup
+            setIsAddLogoPopupVisible(false);
+            setIsAddTextLogoPopupVisible(true);
           }}
           onUpload={() => {
-            setIsAddLogoPopupVisible(false); // Hide AddLogoPopup
-            setIsUploadLogoPopupVisible(true); // Show UploadLogoPopup
+            setIsAddLogoPopupVisible(false);
+            setIsUploadLogoPopupVisible(true);
           }}
         />
       )}
@@ -140,9 +157,10 @@ const Popup = ({ onClose, visible }) => {
       {isAddTextLogoPopupVisible && (
         <AddTextLogoPopup
           onBack={() => {
-            setIsAddTextLogoPopupVisible(false); // Hide AddTextLogoPopup
-            setIsAddLogoPopupVisible(true); // Optionally go back to AddLogoPopup
+            setIsAddTextLogoPopupVisible(false);
+            setIsAddLogoPopupVisible(true);
           }}
+          onFinish={handleFinishTextLogo}
         />
       )}
 
@@ -150,8 +168,8 @@ const Popup = ({ onClose, visible }) => {
       {isUploadLogoPopupVisible && (
         <UploadLogoPopup
           onBack={() => {
-            setIsUploadLogoPopupVisible(false); // Hide UploadLogoPopup
-            setIsAddLogoPopupVisible(true); // Show AddLogoPopup
+            setIsUploadLogoPopupVisible(false);
+            setIsAddLogoPopupVisible(true);
           }}
         />
       )}
