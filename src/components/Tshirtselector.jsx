@@ -48,9 +48,23 @@ const TShirtSelector = () => {
 
       {/* Right-Side Section */}
       <div className="w-full md:w-1/3 md:pr-10">
+        {/* Shirt Image Scroller */}
+        <div className="mt-4 font-medium text-lg text-center md:text-left">Shirt Images</div>
+        <div className="overflow-x-auto flex space-x-2 mt-4 p-2">
+          {product?.images?.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`T-Shirt View ${index + 1}`}
+              className="w-24 h-24 object-cover rounded-md cursor-pointer border border-gray-300 hover:border-orange-500"
+              onClick={() => handleShirtChange(image)}
+            />
+          ))}
+        </div>
+
         {/* Shirt Selector */}
         <div className="mt-4 font-medium text-lg text-center md:text-left">
-          Select Your T-Shirt
+          Select Your T-Shirt View
         </div>
         <div className="grid grid-cols-3 gap-4 mt-4 p-2">
           {product && (
@@ -68,6 +82,18 @@ const TShirtSelector = () => {
               </div>
             ))
           )}
+        </div>
+
+        {/* Color Picker */}
+        <div className="mt-6 font-medium text-lg text-center md:text-left">Select Color</div>
+        <div className="flex space-x-2 mt-4">
+          {product?.colors?.map((color, index) => (
+            <div
+              key={index}
+              className="w-8 h-8 rounded-full border border-gray-300 cursor-pointer hover:border-orange-500"
+              style={{ backgroundColor: color }}
+            ></div>
+          ))}
         </div>
 
         {/* Shirt Details Section */}

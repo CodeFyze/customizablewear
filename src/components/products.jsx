@@ -36,22 +36,29 @@ const Products = () => {
 
   const handleProductSubmit = async (productData) => {
     try {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        toast.error("You are not logged in. Please log in to add products.", { position: "top-right" });
-        return;
-      }
       const formData = new FormData();
       formData.append("title", productData.title);
-      formData.append("description", productData.description);
+      // formData.append("description", productData.description);
       formData.append("price", productData.price);
       
+      // Add images
+      if (productData.images) {
+        productData.images.forEach((image) => {
+          formData.append("images", image);
+        });
+      }
       if (productData.front) formData.append("front", productData.front);
       if (productData.back) formData.append("back", productData.back);
       if (productData.side) formData.append("side", productData.side);
+
+      // Add colors
+      if (productData.colors) {
+        productData.colors.forEach((color) => {
+          formData.append("colors", color);
+        });
+      }
       console.log("Form data in products", formData);
       console.log("Selected product:", productData);
-      
 
       let response;
       if (selectedProduct) {
