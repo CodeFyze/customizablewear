@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import LargeBack from "../assets/shirtlogos/bottom-back_so_large.png";
 import LargeFront from "../assets/shirtlogos/bottom-left_pk_large.png";
 import LeftBreast from "../assets/shirtlogos/bottom-right_k4_large.png";
@@ -6,6 +5,7 @@ import LeftSleeve from "../assets/shirtlogos/sleeve-left_1f_large.png";
 import NapeOfNeck from "../assets/shirtlogos/nape-of-neck_dq_large.png";
 import RightBreast from "../assets/shirtlogos/right-chest_no_large.png";
 import RightSleeve from "../assets/shirtlogos/sleeve-right_ju_large.png";
+import PropTypes from 'prop-types';
 
 const SizePopup = ({ onClose, onNext, visible, selectedPosition, setSelectedPosition }) => {
   if (!visible) return null;
@@ -72,6 +72,14 @@ const SizePopup = ({ onClose, onNext, visible, selectedPosition, setSelectedPosi
       </div>
     </div>
   );
+};
+
+SizePopup.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+  selectedPosition: PropTypes.number.isRequired,
+  setSelectedPosition: PropTypes.func.isRequired,
 };
 
 export default SizePopup;

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { add } from "../store/cartSlice";
 import TShirtSelector from "../components/Tshirtselector";
+import PropTypes from "prop-types"; 
 
 const Products = ({ showTShirtSelector = true }) => {
   const [products, setProducts] = useState([]);
@@ -79,6 +80,11 @@ const Products = ({ showTShirtSelector = true }) => {
       </div>
     </div>
   );
+  
 };
 
+// Define PropTypes for validation
+Products.propTypes = {
+  showTShirtSelector: PropTypes.bool,
+};
 export default Products;

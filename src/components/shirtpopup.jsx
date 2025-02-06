@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Embroidery from "../assets/images/Embroidery.jpeg";
 import Print from "../assets/images/print.jpeg";
 import SizePopup from "./shirtpositionpopup";
 import AddLogoPopup from "./addlogo";
 import AddTextLogoPopup from "./AddTextLogoPopup";
 import UploadLogoPopup from "./UploadLogoPopup";
+import PropTypes from "prop-types";
 
 const Popup = ({ onClose, visible }) => {
   const [selectedMethod, setSelectedMethod] = useState("Embroidery");
@@ -13,7 +14,19 @@ const Popup = ({ onClose, visible }) => {
   const [isAddLogoPopupVisible, setIsAddLogoPopupVisible] = useState(false);
   const [isAddTextLogoPopupVisible, setIsAddTextLogoPopupVisible] = useState(false);
   const [isUploadLogoPopupVisible, setIsUploadLogoPopupVisible] = useState(false);
-  const [textLogoDetails, setTextLogoDetails] = useState(null);
+  const [setTextLogoDetails] = useState(null);
+
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [visible]);
 
   const handleFinishTextLogo = (details) => {
     setTextLogoDetails(details);
@@ -23,14 +36,15 @@ const Popup = ({ onClose, visible }) => {
     console.log("Text logo details:", details);
     // Handle the details as needed, e.g., save to state, send to server, etc.
   };
+
   if (!visible) return null;
 
   return (
     <>
       {/* Main Popup */}
       {!showSizePopup && !isAddLogoPopupVisible && !isAddTextLogoPopupVisible && !isUploadLogoPopupVisible && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg w-96 md:w-[600px]">
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50 overflow-hidden">
+          <div className="bg-white p-8 rounded-lg w-96 md:w-[600px] z-60">
             <div className="font-semibold text-xl mb-4 text-center">
               Russell Classic Heavyweight T-Shirt
             </div>
@@ -175,6 +189,11 @@ const Popup = ({ onClose, visible }) => {
       )}
     </>
   );
+};
+
+Popup.propTypes = {
+  onClose: PropTypes.func.isRequired, // Must be a function
+  visible: PropTypes.bool.isRequired, // Must be a boolean
 };
 
 export default Popup;

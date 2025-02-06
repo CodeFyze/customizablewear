@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-
+import  { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [productTitle, setProductTitle] = useState("");
   const [productPrice, setProductPrice] = useState("");
@@ -212,6 +212,24 @@ const Modal = ({ isOpen, onClose, onSubmit, initialData }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialData: PropTypes.shape({
+    title: PropTypes.string,
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    stock: PropTypes.string,
+    images: PropTypes.shape({
+      front: PropTypes.any,
+      back: PropTypes.any,
+      side: PropTypes.any,
+      extra: PropTypes.arrayOf(PropTypes.any),
+    }),
+    colors: PropTypes.arrayOf(PropTypes.string),
+  }),
 };
 
 export default Modal;

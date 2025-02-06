@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import  { useState } from "react";
+import PropTypes from "prop-types"; 
 const AddTextLogoPopup = ({ onBack, onFinish }) => {
   const [textLine, setTextLine] = useState("");
   const [font, setFont] = useState("Standard");
@@ -120,5 +120,11 @@ const AddTextLogoPopup = ({ onBack, onFinish }) => {
     </div>
   );
 };
+
+AddTextLogoPopup.propTypes = {
+  onBack: PropTypes.func.isRequired,
+  onFinish: PropTypes.func.isRequired,
+};
+
 
 export default AddTextLogoPopup;

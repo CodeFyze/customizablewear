@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const UploadLogoPopup = ({ onBack }) => {
   return (
@@ -29,7 +29,7 @@ const UploadLogoPopup = ({ onBack }) => {
               Choose File
             </button>
             <p className="text-sm text-gray-500">
-              Drag 'n' Drop Some Files Here, or Click To Select Files
+              Drag `n` Drop Some Files Here, or Click To Select Files
             </p>
             <p className="text-sm text-gray-500 mt-1">
               Upload choose file <strong>JPG, PNG, ESP, AI, PDF</strong>
@@ -73,6 +73,9 @@ const UploadLogoPopup = ({ onBack }) => {
       </div>
     </div>
   );
+};
+UploadLogoPopup.propTypes = {
+  onBack: PropTypes.func.isRequired, 
 };
 
 export default UploadLogoPopup;

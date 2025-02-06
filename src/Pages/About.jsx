@@ -1,11 +1,10 @@
-import React, { useRef } from 'react';
 import storeImage from '../assets/images/header.webp';
 
 const About = () => {
 
 
   return (
-    <div className="container mx-auto my-28 px-4">
+    <div className="container mx-auto my-28 px-4 lg:px-10">
       <div className="flex flex-col md:flex-row items-center justify-between">
         <div className="w-full md:w-1/2 mb-8 md:mb-0">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">

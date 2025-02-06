@@ -1,5 +1,3 @@
-import React from "react";
-
 const Earnings = () => {
   const data = [
     { month: "January", earnings: "$5,000" },

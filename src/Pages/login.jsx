@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
-  const [isLogin, setIsLogin] = useState(true); // Toggle between Login
+  const [isLogin] = useState(true); // Toggle between Login
   const {
     register,
     handleSubmit,
@@ -109,7 +109,7 @@ const LoginPage = () => {
 
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-600">
-            Don't have an account?
+            Do not have an account?
           </span>
           <button
             onClick={() => navigate("/signup")} // Use navigate instead of history.push

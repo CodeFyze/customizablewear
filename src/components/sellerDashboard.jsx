@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import  { useState } from "react";
+import PropTypes from "prop-types";
 import {
   FaBars,
   FaBox,
@@ -146,4 +147,16 @@ const DashboardCard = ({ title, value, icon }) => (
   </div>
 );
 
+MenuItem.propTypes = {
+  icon: PropTypes.node.isRequired, // Accepts React nodes (e.g., icons)
+  text: PropTypes.string.isRequired, // Must be a string
+  isActive: PropTypes.bool.isRequired, // Boolean value
+  onClick: PropTypes.func.isRequired, // Function for click handling
+};
+
+DashboardCard.propTypes = {
+  title: PropTypes.string.isRequired, // Must be a string
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Accepts string or number
+  icon: PropTypes.node.isRequired, // React node for the icon
+};
 export default SellerDashboard;

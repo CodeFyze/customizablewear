@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   FaBars,
   FaTimes,
   FaHome,
-  FaBoxOpen,
   FaShoppingCart,
-  FaInfoCircle,
 } from "react-icons/fa";
 import logo from "../assets/images/logo.jpeg";
 import { useSelector } from "react-redux";
@@ -98,6 +97,7 @@ const NavLink = ({ to, icon, text }) => (
     <span>{text}</span>
     <span className="absolute bottom-0 left-0 w-full bg-[#4bf6d4] h-0.5 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
   </Link>
+
 );
 
 const NavLinkMobile = ({ to, text, onClick }) => (
@@ -110,5 +110,17 @@ const NavLinkMobile = ({ to, text, onClick }) => (
     <span className="absolute bottom-0 left-0 w-full bg-orange-500 h-0.5 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
   </Link>
 );
+
+NavLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  icon: PropTypes.element,
+  text: PropTypes.string.isRequired,
+};
+
+NavLinkMobile.propTypes = {
+  to: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
 
 export default Navigation;

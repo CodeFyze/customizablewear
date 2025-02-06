@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { remove, increaseQuantity, decreaseQuantity } from "../store/cartSlice";
 import { useNavigate } from "react-router-dom";

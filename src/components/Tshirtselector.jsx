@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SizeSelection from "./SizeSelection";
 
 const TShirtSelector = () => {
@@ -36,12 +36,12 @@ const TShirtSelector = () => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-x-8 md:space-y-0">
       {/* Main Shirt Display */}
-      <div className="w-full md:w-[1000px] flex justify-center">
+      <div className="w-full flex justify-center">
         {selectedShirt && (
           <img
             src={selectedShirt}
             alt="Selected T-Shirt"
-            className={`w-full h-auto md:m-10 max-w-xs md:max-w-2xl p-4 md:p-0 transform transition-transform duration-200 ${isAnimating ? "scale-75 opacity-50" : "scale-100 opacity-100"}`}
+            className={`w-full h-auto sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px] lg:w-[672px] lg:h-[672px] p-4 md:p-0 transform transition-transform duration-200 ${isAnimating ? "scale-75 opacity-50" : "scale-100 opacity-100"} object-cover`}
           />
         )}
       </div>
