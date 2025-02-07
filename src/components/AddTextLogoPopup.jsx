@@ -1,13 +1,19 @@
-import  { useState } from "react";
-import PropTypes from "prop-types"; 
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { add } from "../store/cartSlice";
+
 const AddTextLogoPopup = ({ onBack, onFinish }) => {
   const [textLine, setTextLine] = useState("");
   const [font, setFont] = useState("Standard");
   const [color, setColor] = useState("Black");
   const [notes, setNotes] = useState("");
+  const dispatch = useDispatch();
 
   const handleFinish = () => {
-    onFinish({ textLine, font, color, notes });
+    const textLogoDetails = { textLine, font, color, notes, id: Date.now() };
+    dispatch(add(textLogoDetails));
+    onFinish(textLogoDetails);
   };
 
   return (
@@ -125,6 +131,5 @@ AddTextLogoPopup.propTypes = {
   onBack: PropTypes.func.isRequired,
   onFinish: PropTypes.func.isRequired,
 };
-
 
 export default AddTextLogoPopup;

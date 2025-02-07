@@ -14,7 +14,7 @@ const Popup = ({ onClose, visible }) => {
   const [isAddLogoPopupVisible, setIsAddLogoPopupVisible] = useState(false);
   const [isAddTextLogoPopupVisible, setIsAddTextLogoPopupVisible] = useState(false);
   const [isUploadLogoPopupVisible, setIsUploadLogoPopupVisible] = useState(false);
-  const [setTextLogoDetails] = useState(null);
+  const [textLogoDetails, setTextLogoDetails] = useState(null); // Added state for text logo details
 
   useEffect(() => {
     if (visible) {

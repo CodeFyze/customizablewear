@@ -9,8 +9,11 @@ const Cart = () => {
   const navigate = useNavigate();
 
   // Calculate the total amount
-  const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  const shippingCost = 50; 
+  const totalAmount = cart.reduce(
+    (total, item) => total + (item.price ? item.price * (item.quantity || 1) : 0),
+    0
+  );
+  const shippingCost = 50;
   const totalWithShipping = totalAmount + shippingCost;
 
   const handleCheckout = () => {
@@ -30,31 +33,44 @@ const Cart = () => {
                 key={item.id}
                 className="flex items-center justify-between bg-white shadow-lg shadow-gray-300 rounded-md p-4 mb-4"
               >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-20 h-20 object-contain"
-                />
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-20 h-20 object-contain"
+                  />
+                ) : (
+                  <div className="w-20 h-20 flex items-center justify-center bg-gray-200">
+                    <span className="text-sm text-gray-700">Text Logo</span>
+                  </div>
+                )}
                 <div className="flex-1 ml-4">
-                  <h2 className="text-lg font-bold text-gray-800">{item.title}</h2>
-                  <p className="text-gray-600 text-sm">{item.category}</p>
-                  <p className="text-gray-800 font-bold text-lg">${item.price}</p>
+                  <h2 className="text-lg font-bold text-gray-800">
+                    {item.title || item.textLine}
+                  </h2>
+                  {item.category && <p className="text-gray-600 text-sm">{item.category}</p>}
+                  {item.price && <p className="text-gray-800 font-bold text-lg">${item.price}</p>}
+                  {item.font && <p className="text-gray-600 text-sm">Font: {item.font}</p>}
+                  {item.color && <p className="text-gray-600 text-sm">Color: {item.color}</p>}
+                  {item.notes && <p className="text-gray-600 text-sm">Notes: {item.notes}</p>}
                 </div>
-                <div className="flex items-center">
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded"
-                    onClick={() => dispatch(decreaseQuantity(item.id))}
-                  >
-                    -
-                  </button>
-                  <span className="mx-2">{item.quantity}</span>
-                  <button
-                    className="px-2 py-1 bg-gray-200 rounded"
-                    onClick={() => dispatch(increaseQuantity(item.id))}
-                  >
-                    +
-                  </button>
-                </div>
+                {item.price ? (
+                  <div className="flex items-center">
+                    <button
+                      className="px-2 py-1 bg-gray-200 rounded"
+                      onClick={() => dispatch(decreaseQuantity(item.id))}
+                    >
+                      -
+                    </button>
+                    <span className="mx-2">{item.quantity}</span>
+                    <button
+                      className="px-2 py-1 bg-gray-200 rounded"
+                      onClick={() => dispatch(increaseQuantity(item.id))}
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : null}
                 <button
                   className="ml-4 bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-300"
                   onClick={() => dispatch(remove(item.id))}
